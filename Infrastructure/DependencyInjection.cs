@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Interfaces;
+using Infrastructure.Persistence.MSSQL;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +12,10 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static void AddInfrastructureServices(this IServiceCollection serviceDescriptors)
+        public static void AddInfrastructureServices(this IServiceCollection services, string connectionString)
         {
-            
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
         }
     }
 }
